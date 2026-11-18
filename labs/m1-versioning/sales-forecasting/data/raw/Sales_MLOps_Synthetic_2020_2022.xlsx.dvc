@@ -1,0 +1,6 @@
+outs:
+- md5: d1fc181586e574796e98e46b7ed179ae
+  size: 25308167
+  isexec: true
+  hash: md5
+  path: Sales_MLOps_Synthetic_2020_2022.xlsx

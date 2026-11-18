@@ -1,0 +1,7 @@
+[core]
+    remote = storage
+['remote "storage"']
+    url = s3://dvc-store/m1-sales/dvcstore
+    endpointurl = http://localhost:8333
+    use_ssl = false
+    region = us-east-1
