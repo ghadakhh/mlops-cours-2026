@@ -1,0 +1,67 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: uv run python src/prepare.py
+    deps:
+    - path: data/raw/Sales_MLOps_Synthetic_2020_2022.xlsx
+      hash: md5
+      md5: d1fc181586e574796e98e46b7ed179ae
+      size: 25308167
+      isexec: true
+    - path: src/prepare.py
+      hash: md5
+      md5: ce6d31bc1da035c808069e50d9fdffb8
+      size: 1794
+    outs:
+    - path: data/processed/X_test.parquet
+      hash: md5
+      md5: 8b86acf0ce42f2f140ad16680d452838
+      size: 8536
+    - path: data/processed/X_train.parquet
+      hash: md5
+      md5: 37b024ca875970151b22820265b639c8
+      size: 11031
+    - path: data/processed/y_test.parquet
+      hash: md5
+      md5: b0e19cdaa871c3d90024c04e440d903d
+      size: 3811
+    - path: data/processed/y_train.parquet
+      hash: md5
+      md5: e4983d2fe7fff6c7706374157c3d8946
+      size: 6328
+  train:
+    cmd: uv run python src/train.py --model gradient_boost --n_estimators 50 
+      --max_depth 2 --learning_rate 0.1
+    deps:
+    - path: data/processed/X_test.parquet
+      hash: md5
+      md5: 8b86acf0ce42f2f140ad16680d452838
+      size: 8536
+    - path: data/processed/X_train.parquet
+      hash: md5
+      md5: 37b024ca875970151b22820265b639c8
+      size: 11031
+    - path: data/processed/y_test.parquet
+      hash: md5
+      md5: b0e19cdaa871c3d90024c04e440d903d
+      size: 3811
+    - path: data/processed/y_train.parquet
+      hash: md5
+      md5: e4983d2fe7fff6c7706374157c3d8946
+      size: 6328
+    - path: src/train.py
+      hash: md5
+      md5: 432aa3ad29345b467c96e2f8042c84e2
+      size: 3215
+    params:
+      params.yaml:
+        train:
+          model: gradient_boost
+          n_estimators: 50
+          max_depth: 2
+          learning_rate: 0.1
+    outs:
+    - path: reports/metrics.json
+      hash: md5
+      md5: 8ee9e4b33dae2c65caad9560b376b240
+      size: 92

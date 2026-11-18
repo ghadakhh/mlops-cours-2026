@@ -1,0 +1,25 @@
+stages:
+  prepare:
+    cmd: uv run python src/prepare.py
+    deps:
+      - src/prepare.py
+      - data/raw/Sales_MLOps_Synthetic_2020_2022.xlsx
+    outs:
+      - data/processed/X_train.parquet
+      - data/processed/X_test.parquet
+      - data/processed/y_train.parquet
+      - data/processed/y_test.parquet
+
+  train:
+    cmd: uv run python src/train.py --model ${train.model} --n_estimators ${train.n_estimators} --max_depth ${train.max_depth} --learning_rate ${train.learning_rate}
+    deps:
+      - src/train.py
+      - data/processed/X_train.parquet
+      - data/processed/X_test.parquet
+      - data/processed/y_train.parquet
+      - data/processed/y_test.parquet
+    params:
+      - train
+    metrics:
+      - reports/metrics.json:
+          cache: false
